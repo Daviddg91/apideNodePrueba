@@ -1,0 +1,22 @@
+{
+  "name": "React-MERN-Clientes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^8.6.0",
+    "express": "^4.18.2",
+    "xhr2": "^0.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Daviddg91/React-MERN"
+  }
+}
