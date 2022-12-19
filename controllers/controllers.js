@@ -2,7 +2,7 @@ const { response } = require('express');
 global.XMLHttpRequest = require('xhr2');
  
 var xhr = new XMLHttpRequest();
-
+response.writeHead(200, { "Content-Type": "text/html" });
 const getMessage = async(req, res = response ) => {
    
     const mensaje = `Request a  ${req.baseUrl} , ${Date.now()}`
@@ -32,8 +32,7 @@ const getTiempo = async(req, res = response ) => {
    const url = 'https://www.el-tiempo.net/api/json/v2/provincias/50/municipios/50297';
    xhr.open('GET', url, true);
     xhr.send();
-    
-    xhr.overrideMimeType("application/json");  
+     
     xhr.onload = function () {
 
         if (xhr.status >= 200 && xhr.status < 300) {
@@ -45,10 +44,18 @@ const getTiempo = async(req, res = response ) => {
                 fecha: tiempo.fecha,
                 temperaturaActual: tiempo.temperatura_actual,
                 temperaturaMin: tiempo.temperaturas.min,
-                temperaturaMinMax: tiempo.temperaturas.max
+                temperaturaMax: tiempo.temperaturas.max
 
             };
-            outResponse(req, res,salida);
+            const salidaHtml =`<html>
+            Tiempo en ${salida.municipio}: <br/>
+            <div>
+            Fecha:  ${salida.fecha} <br/>
+            Temperatura actual: ${salida.temperaturaActual}  <br/>
+            Temperatura minima: ${salida.temperaturaMin} <br/>
+            Temperatura maxima: ${salida.temperaturaMax} <br/>
+            </div> </html>`;
+            outResponseHTML(req, res,salidaHtml);
              
         } else {
 
@@ -58,10 +65,11 @@ const getTiempo = async(req, res = response ) => {
 
 
 }
-const outResponse = async(req, res = response, respuesta ) => {
+const outResponseHTML = async(req, res = response, respuesta ) => {
      try {
-    
-        res.status(200).json(respuesta);
+        
+        res.status(200).send(respuesta);
+        
         
     } catch (error) {
         console.log(error)
